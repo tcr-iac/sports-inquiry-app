@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Summary Tables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f9;
+        }
+
+        h1, h2 {
+            color: #1d3557;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background: #1d3557;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        a {
+            color: #1d3557;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/">Back to Menu</a>
+
+<h1>Summary / Statistical Tables</h1>
+
+<h2>Summary by Sport</h2>
+<table>
+    <tr>
+        <th>Sport</th>
+        <th>Games Played</th>
+        <th>Average Score</th>
+    </tr>
+    {% for row in sport_summary %}
+    <tr>
+        <td>{{ row['sport_name'] }}</td>
+        <td>{{ row['games_played'] }}</td>
+        <td>{{ "%.1f"|format(row['avg_score']) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Summary by Team</h2>
+<table>
+    <tr>
+        <th>Team</th>
+        <th>Games Played</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <th>Ties</th>
+    </tr>
+    {% for row in team_summary %}
+    <tr>
+        <td>{{ row['team_name'] }}</td>
+        <td>{{ row['games_played'] }}</td>
+        <td>{{ row['wins'] }}</td>
+        <td>{{ row['losses'] }}</td>
+        <td>{{ row['ties'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

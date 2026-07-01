@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup Sports Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f9;
+        }
+
+        h1 {
+            color: #1d3557;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 9px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #1d3557;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        a {
+            color: #1d3557;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/">Back to Menu</a>
+
+<h1>Input / Setup Sports Data</h1>
+
+<form method="post">
+    <div>
+        <label>IACID</label>
+        <input type="number" name="iacid" value="1" required>
+    </div>
+
+    <div>
+        <label>SCID</label>
+        <input type="number" name="scid" value="100" required>
+    </div>
+
+    <div>
+        <label>Season</label>
+        <input type="text" name="season" value="2026 Spring" required>
+    </div>
+
+    <div>
+        <label>Sport</label>
+        <select name="sport_id">
+            {% for s in sports %}
+            <option value="{{ s['id'] }}">{{ s['name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label>Your Team</label>
+        <select name="school_id">
+            {% for t in teams %}
+            <option value="{{ t['id'] }}">{{ t['name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label>Opponent</label>
+        <select name="opponent_id">
+            {% for t in teams %}
+            <option value="{{ t['id'] }}">{{ t['name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label>Level</label>
+        <select name="level_id">
+            {% for l in levels %}
+            <option value="{{ l['id'] }}">{{ l['name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label>Date</label>
+        <input type="date" name="game_date" required>
+    </div>
+
+    <div>
+        <label>Location</label>
+        <input type="text" name="location" placeholder="Example: IAC Gym" required>
+    </div>
+
+    <div>
+        <label>Your Team Score</label>
+        <input type="number" name="your_team_score">
+    </div>
+
+    <div>
+        <label>Opponent Score</label>
+        <input type="number" name="opponent_score">
+    </div>
+
+    <div>
+        <label>PDF Link</label>
+        <input type="text" name="pdf_link" placeholder="reports/game.pdf">
+    </div>
+
+    <div>
+        <label>Gender</label>
+        <select name="gender">
+            <option>Boys</option>
+            <option>Girls</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Add Game Result</button>
+    </div>
+</form>
+
+</body>
+</html>

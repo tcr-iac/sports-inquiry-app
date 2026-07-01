@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f4f6f9;
+        }
+
+        h1 {
+            color: #1d3557;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        a {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #1d3557;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        a:hover {
+            background: #eaf0f8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Community Sports Menu System</h1>
+
+    <div class="menu">
+        <a href="/setup">Input / Setup Sports Data</a>
+        <a href="/sports">Sports Inquiry Report</a>
+        <a href="/summary">Summary / Statistical Tables</a>
+        <a href="/api/sports">JSON API Endpoint</a>
+    </div>
+</body>
+</html>

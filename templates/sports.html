@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sports Inquiry Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f9;
+        }
+
+        h1 {
+            color: #1d3557;
+        }
+
+        .filter-box, .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 9px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #1d3557;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1600px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #1d3557;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .table-box {
+            overflow-x: auto;
+        }
+
+        .top {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .top a {
+            color: #1d3557;
+            font-weight: bold;
+        }
+
+        @media print {
+            .filter-box, .top, .print-btn {
+                display: none;
+            }
+
+            body {
+                background: white;
+                margin: 10px;
+            }
+
+            .table-box {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <a href="/">Back to Menu</a>
+    <a href="/setup">Input Data</a>
+    <a href="/summary">Summary Tables</a>
+</div>
+
+<h1>Sports Inquiry Report</h1>
+
+<div class="filter-box">
+    <form method="get" action="/sports">
+        <div>
+            <label>IACID</label>
+            <input type="text" name="iacid" value="{{ selected_iacid }}">
+        </div>
+
+        <div>
+            <label>SCID</label>
+            <input type="text" name="scid" value="{{ selected_scid }}">
+        </div>
+
+        <div>
+            <label>Sport</label>
+            <select name="sport">
+                <option value="">All Sports</option>
+                {% for s in sports %}
+                <option value="{{ s['id'] }}" {% if selected_sport == s['id']|string %}selected{% endif %}>{{ s['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>Gender</label>
+            <select name="gender">
+                <option value="">All</option>
+                <option value="Boys" {% if selected_gender == "Boys" %}selected{% endif %}>Boys</option>
+                <option value="Girls" {% if selected_gender == "Girls" %}selected{% endif %}>Girls</option>
+                <option value="Male" {% if selected_gender == "Male" %}selected{% endif %}>Male</option>
+                <option value="Female" {% if selected_gender == "Female" %}selected{% endif %}>Female</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Level</label>
+            <select name="level">
+                <option value="">All Levels</option>
+                {% for l in levels %}
+                <option value="{{ l['id'] }}" {% if selected_level == l['id']|string %}selected{% endif %}>{{ l['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>Your Team</label>
+            <select name="team">
+                <option value="">All Teams</option>
+                {% for t in teams %}
+                <option value="{{ t['id'] }}" {% if selected_team == t['id']|string %}selected{% endif %}>{{ t['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>Opponent</label>
+            <select name="opponent">
+                <option value="">All Opponents</option>
+                {% for t in teams %}
+                <option value="{{ t['id'] }}" {% if selected_opponent == t['id']|string %}selected{% endif %}>{{ t['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>First Sort</label>
+            <select name="sort1">
+                <option value="game_date" {% if sort1 == "game_date" %}selected{% endif %}>Date</option>
+                <option value="season" {% if sort1 == "season" %}selected{% endif %}>Season</option>
+                <option value="sport_name" {% if sort1 == "sport_name" %}selected{% endif %}>Sport</option>
+                <option value="your_team" {% if sort1 == "your_team" %}selected{% endif %}>Your Team</option>
+                <option value="opponent_team" {% if sort1 == "opponent_team" %}selected{% endif %}>Opponent</option>
+                <option value="level_name" {% if sort1 == "level_name" %}selected{% endif %}>Level</option>
+                <option value="gender" {% if sort1 == "gender" %}selected{% endif %}>Gender</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Second Sort</label>
+            <select name="sort2">
+                <option value="sport_name" {% if sort2 == "sport_name" %}selected{% endif %}>Sport</option>
+                <option value="game_date" {% if sort2 == "game_date" %}selected{% endif %}>Date</option>
+                <option value="season" {% if sort2 == "season" %}selected{% endif %}>Season</option>
+                <option value="your_team" {% if sort2 == "your_team" %}selected{% endif %}>Your Team</option>
+                <option value="opponent_team" {% if sort2 == "opponent_team" %}selected{% endif %}>Opponent</option>
+                <option value="level_name" {% if sort2 == "level_name" %}selected{% endif %}>Level</option>
+                <option value="gender" {% if sort2 == "gender" %}selected{% endif %}>Gender</option>
+            </select>
+        </div>
+
+        <div>
+            <label>&nbsp;</label>
+            <button type="submit">Run Report</button>
+        </div>
+
+        <div>
+            <label>&nbsp;</label>
+            <button type="button" onclick="window.print()" class="print-btn">Print Report</button>
+        </div>
+    </form>
+</div>
+
+<div class="table-box">
+    <table>
+        <thead>
+            <tr>
+                <th>IACID</th>
+                <th>SCID</th>
+                <th>Season</th>
+                <th>Sport</th>
+                <th>Sports ID</th>
+                <th>School ID</th>
+                <th>Opponent ID</th>
+                <th>Game ID</th>
+                <th>Date</th>
+                <th>Level</th>
+                <th>Gender</th>
+                <th>PDF</th>
+                <th>Location</th>
+                <th>Your Team</th>
+                <th>Your Score</th>
+                <th>Opponent Team</th>
+                <th>Opponent Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>{{ game['iacid'] }}</td>
+                <td>{{ game['scid'] }}</td>
+                <td>{{ game['season'] }}</td>
+                <td>{{ game['sport_name'] }}</td>
+                <td>{{ game['sport_id'] }}</td>
+                <td>{{ game['school_id'] }}</td>
+                <td>{{ game['opponent_id'] }}</td>
+                <td>{{ game['game_id'] }}</td>
+                <td>{{ game['game_date'] }}</td>
+                <td>{{ game['level_name'] }}</td>
+                <td>{{ game['gender'] }}</td>
+                <td><a href="{{ game['pdf_link'] }}" target="_blank">View</a></td>
+                <td>{{ game['location'] }}</td>
+                <td>{{ game['your_team'] }}</td>
+                <td>{{ game['your_team_score'] }}</td>
+                <td>{{ game['opponent_team'] }}</td>
+                <td>{{ game['opponent_score'] }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="17">No games found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
